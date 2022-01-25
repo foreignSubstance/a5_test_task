@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:a5_test_task/first_screen.dart';
+import 'package:a5_test_task/src/first_screen.dart';
 
 void main() => runApp(const PhoneValidatorApp());
 

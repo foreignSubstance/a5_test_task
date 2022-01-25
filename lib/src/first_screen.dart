@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:a5_test_task/second_screen.dart';
+import 'package:a5_test_task/src/second_screen.dart';
+import 'package:a5_test_task/src/formatter.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   final _phoneFieldController = TextEditingController();
   final RegExp _pattern = RegExp(
-      r'^\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}'); //Phone number pattern e.g. (093) 999-99-99
+      r'^\(\d{3}\)\s\d{3}\-\d{4}'); //Шаблон валидации номера. Пример подходяшего номера: (201) 555-0123
   String _enteredLine = '';
   bool _isNumberValid = false;
 
@@ -31,10 +32,7 @@ class _FirstScreenState extends State<FirstScreen> {
   _onPhoneChange() {
     setState(() {
       _enteredLine = _phoneFieldController.text;
-      _isNumberValid =
-          (_pattern.hasMatch(_enteredLine) && _enteredLine.length == 15)
-              ? true
-              : false;
+      _isNumberValid = (_pattern.hasMatch(_enteredLine)) ? true : false;
     });
   }
 
@@ -64,14 +62,14 @@ class _FirstScreenState extends State<FirstScreen> {
               children: [
                 TextFormField(
                   controller: _phoneFieldController,
-                  //focusNode: _phoneFocusNode,
                   autofocus: true,
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[\d\(\)\s\-]'))
+                    CustomPhoneFormatter(),
+                    LengthLimitingTextInputFormatter(14),
                   ],
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                      hintText: 'e.g. (093) 999-99-99',
+                      hintText: 'start typing',
                       hintStyle: const TextStyle(color: Colors.grey),
                       helperText: 'Enter your phone number',
                       helperStyle: const TextStyle(color: Colors.grey),
